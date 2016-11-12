@@ -12,16 +12,24 @@ output:
 knitr::opts_chunk$set(echo=TRUE)
 ```
 
-Set this flag to TRUE when you want to write out plots.
-```{r}
-write.plot.enabled = FALSE
-```
-
 Additional R packages
 ```{r, message=FALSE}
 library(data.table)
 library(fit)
 library(ggplot2)
+```
+
+Output directory name
+```{r}
+output.dir <- "Output/"
+```
+
+```{r write.plot}
+write.plot <- function(p, filename, width = 1024, height = 576, font.size = 16) {
+  png(filename,width, height)
+  print(p + theme_bw(base_size=font.size))
+  dev.off()
+}
 ```
 
 Read ANT+ FIT file
@@ -40,12 +48,18 @@ data$position[data$lap %in% c(3,5,7)] <- "Upright"
 ```
 
 ```{r}
-ggplot(data[data$lap > 1 & data$lap < 8,]) +
+p <- ggplot(data[data$lap > 1 & data$lap < 8,]) +
     geom_point(aes(time, heart_rate,color=position)) +
     geom_smooth(aes(time, heart_rate,color=position), method = "lm") +
     labs(title="Heart Rate by Position", x="Time [s]", y="Hear Rate [1/min]") +
     scale_colour_discrete(name="Position") +
     theme_bw()
+p
 ```
 
+```{r}
+if (!dir.exists(output.dir)) dir.create(output.dir)
+write.csv(data, paste0(output.dir, "Heart Frequency by Position.csv"), row.names = FALSE)
+write.plot(p, paste0(output.dir, "Heart Frequency by Position.png"))
+```
 
