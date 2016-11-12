@@ -1,0 +1,27 @@
+---
+title: "Heart Frequency By Position"
+author: "Ralph Rogge (RRO)"
+date: "11/12/2016"
+output:
+    html_document:
+        fig_width: 10
+        fig_height: 6
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+Set this flag to TRUE when you want to write out plots.
+```{r}
+write.plot.enabled = FALSE
+```
+
+Additional R packages
+```{r, message=FALSE}
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(scales)
+```
