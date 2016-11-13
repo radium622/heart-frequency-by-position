@@ -43,12 +43,12 @@ data <- data.frame(heart_rate=raw$record$heart_rate)
 data$time <- cumsum(c(0,diff(raw$record$timestamp)))
 data$lap <- as.numeric(cut(raw$record$timestamp, breaks=c(0,raw$lap$timestamp), labels=seq(1:10)))
 data$position <- rep(NA,nrow(data))
-data$position[data$lap %in% c(2,4,6)] <- "Aero"
-data$position[data$lap %in% c(3,5,7)] <- "Upright"
+data$position[data$lap %in% c(2,4,6,8)] <- "Aero"
+data$position[data$lap %in% c(3,5,7,9)] <- "Upright"
 ```
 
 ```{r}
-p <- ggplot(data[data$lap > 1 & data$lap < 8,]) +
+p <- ggplot(data[data$lap > 1 & data$lap < 10,]) +
     geom_point(aes(time, heart_rate,color=position)) +
     geom_smooth(aes(time, heart_rate,color=position), method = "lm") +
     labs(title="Heart Rate by Position", x="Time [s]", y="Hear Rate [1/min]") +
