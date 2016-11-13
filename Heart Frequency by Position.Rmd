@@ -12,19 +12,19 @@ output:
 knitr::opts_chunk$set(echo=TRUE)
 ```
 
-Additional R packages
+Additional R packages.
 ```{r, message=FALSE}
 library(data.table)
 library(fit)
 library(ggplot2)
 ```
 
-Output directory name
+Output directory name.
 ```{r}
 output.dir <- "Output/"
 ```
 
-```{r write.plot}
+```{r write.plot, echo = FALSE}
 write.plot <- function(p, filename, width = 1024, height = 576, font.size = 16) {
   png(filename,width, height)
   print(p + theme_bw(base_size=font.size))
@@ -32,12 +32,12 @@ write.plot <- function(p, filename, width = 1024, height = 576, font.size = 16) 
 }
 ```
 
-Read ANT+ FIT file
+Read ANT+ FIT input file.
 ```{r}
 raw <- read.fit("Raw Data/2016-11-12-11-45-20.fit")
 ```
 
-Preprocess data
+Preprocess data.
 ```{r}
 data <- data.frame(heart_rate=raw$record$heart_rate) 
 data$time <- cumsum(c(0,diff(raw$record$timestamp)))
@@ -47,6 +47,7 @@ data$position[data$lap %in% c(2,4,6,8)] <- "Aero"
 data$position[data$lap %in% c(3,5,7,9)] <- "Upright"
 ```
 
+Plot heart rate vs time by cycling position.
 ```{r}
 p <- ggplot(data[data$lap > 1 & data$lap < 10,]) +
     geom_point(aes(time, heart_rate,color=position)) +
@@ -57,12 +58,14 @@ p <- ggplot(data[data$lap > 1 & data$lap < 10,]) +
 p
 ```
 
+Write result to files.
 ```{r}
 if (!dir.exists(output.dir)) dir.create(output.dir)
 write.csv(data, paste0(output.dir, "Heart Frequency by Position.csv"), row.names = FALSE)
 write.plot(p, paste0(output.dir, "Heart Frequency by Position.png"))
 ```
 
+Calculate linear model for aero position.
 ```{r}
 x1 <- subset(data,position=="Aero")$time
 y1 <- subset(data,position=="Aero")$heart_rate
@@ -70,6 +73,7 @@ lm1 <- lm(y1 ~ x1)
 summary(lm1)
 ```
 
+Calculate linear model for upright position.
 ```{r}
 x2 <- subset(data,position=="Upright")$time
 y2 <- subset(data,position=="Upright")$heart_rate
@@ -77,6 +81,7 @@ lm2 <- lm(y2 ~ x2)
 summary(lm2)
 ```
 
+Calculate mean of difference and error.
 ```{r}
 x <- seq(x1[1],x2[length(x2)],1)
 z1 <- predict(lm1,data.frame(x1=x))
@@ -84,5 +89,10 @@ z2 <- predict(lm2,data.frame(x2=x))
 z <- z2 - z1
 mean(z)
 sd(z)
+```
+
+## Appendix
+
+```{r write.plot}
 ```
 
