@@ -63,3 +63,26 @@ write.csv(data, paste0(output.dir, "Heart Frequency by Position.csv"), row.names
 write.plot(p, paste0(output.dir, "Heart Frequency by Position.png"))
 ```
 
+```{r}
+x1 <- subset(data,position=="Aero")$time
+y1 <- subset(data,position=="Aero")$heart_rate
+lm1 <- lm(y1 ~ x1)
+summary(lm1)
+```
+
+```{r}
+x2 <- subset(data,position=="Upright")$time
+y2 <- subset(data,position=="Upright")$heart_rate
+lm2 <- lm(y2 ~ x2)
+summary(lm2)
+```
+
+```{r}
+x <- seq(x1[1],x2[length(x2)],1)
+z1 <- predict(lm1,data.frame(x1=x))
+z2 <- predict(lm2,data.frame(x2=x))
+z <- z2 - z1
+mean(z)
+sd(z)
+```
+
