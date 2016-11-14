@@ -1,5 +1,5 @@
 ---
-title: "Heart Frequency By Position"
+title: "Heart Rate By Cycling Position"
 author: "Ralph Rogge (RRO)"
 date: "11/12/2016"
 output:
@@ -52,7 +52,7 @@ Plot heart rate vs time by cycling position.
 p <- ggplot(data[data$lap > 1 & data$lap < 10,]) +
     geom_point(aes(time, heart_rate,color=position)) +
     geom_smooth(aes(time, heart_rate,color=position), method = "lm") +
-    labs(title="Heart Rate by Position", x="Time [s]", y="Hear Rate [1/min]") +
+    labs(title="Heart Rate By Cycling Position", x="Time [s]", y="Hear Rate [1/min]") +
     scale_colour_discrete(name="Position") +
     theme_bw()
 p
@@ -61,8 +61,8 @@ p
 Write result to files.
 ```{r}
 if (!dir.exists(output.dir)) dir.create(output.dir)
-write.csv(data, paste0(output.dir, "Heart Frequency by Position.csv"), row.names = FALSE)
-write.plot(p, paste0(output.dir, "Heart Frequency by Position.png"))
+write.csv(data, paste0(output.dir, "Heart Rate By Cycling Position.csv"), row.names = FALSE)
+write.plot(p, paste0(output.dir, "Heart Rate By Cycling Position.png"))
 ```
 
 Calculate linear model for aero position.
