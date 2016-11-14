@@ -4,5 +4,5 @@ account: rpubs
 server: rpubs.com
 appId: https://api.rpubs.com/api/v1/document/226870/27d7e8dd0f4a4bd29f669950e8e0aed0
 bundleId: https://api.rpubs.com/api/v1/document/226870/27d7e8dd0f4a4bd29f669950e8e0aed0
-url: http://rpubs.com/publish/claim/226870/1d1af4ab23d1482b9bc7142180308b5b
-when: 1479102760.94316
+url: http://rpubs.com/radium622/226870
+when: 1479103793.02158
